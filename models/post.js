@@ -41,24 +41,6 @@ postSchema.pre('remove', async function(next) {
   }
 });
 
-postSchema.pre('update', async function(next) {
-  try {
-    let user = await User.findById(this.user);
-    let post = await user.Post.findById(this.id);
-    if(post){
-      post.name = req.body.name,
-      post.description = req.body.description,
-      post.price = req.body.price,
-      post.postImageUrl = req.body.postImageUrl,
-      post.size = req.body.size,
-      post.color = req.body.color
-
-    }
-  } catch (err) {
-    return next(err)
-  }
-})
-
 
 const Post = mongoose.model("Post", postSchema);
 module.exports = Post;

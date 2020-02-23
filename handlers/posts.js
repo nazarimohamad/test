@@ -33,9 +33,12 @@ exports.getPost = async function(req, res, next) {
 // update specific post
 exports.updatePost = async function(req, res, next) {
   try {
-      let foundPost = await db.Post.findById(res.params.post_id);
-      await foundPost.update();
-      return res.status(200).json(foundPost);
+    let foundUser = await db.User.findById(req.params.id);
+    let foundPost = foundUser.posts.findById(req.params.post_id);
+    await foundPost.update(req.body);
+    let { name, description, price, postImageUrl} = foundPost;
+    await foundUser.save();
+    return res.status(200).json(foundPost);
   } catch (err) {
     return next(err)
   }
